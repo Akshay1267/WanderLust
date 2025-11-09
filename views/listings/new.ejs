@@ -1,0 +1,46 @@
+<% layout("/layouts/boilerplate") %>
+    <div class="row">
+        <div class="col-8 offset-1">
+            <br>
+            <h1>Create new Data!</h1>
+            <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" name="listing[title]" placeholder="Title" class="form-control" required>
+                    <div class="valid-feedback">Title looks good!</div>
+                    <div class="invalid-feedback">Invalid h bhai</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea type="text" name="listing[description]" placeholder="Description"
+                        class="form-control" required></textarea>
+                </div>
+                
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload Listing Image</label>
+                    <input type="file" name="listing[image]" class="form-control" required>
+                </div>
+
+                <div class="mb-3 col-4">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="number" name="listing[price]" placeholder="Price" class="form-control" required>
+                </div>
+
+
+                <div class="mb-3" col-8>
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" name="listing[location]" placeholder="Location" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="country" class="form-label">Country</label>
+                    <input type="text" name="listing[country]" placeholder="Country" class="form-control" required>
+                </div>
+                <br>
+                <button class="btn btn-add">Create Listing</button>
+            </form>
+        </div>
+    </div>
