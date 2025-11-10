@@ -151,9 +151,3 @@ MongoDB Atlas
 This project is licensed under the MIT License – feel free to use and modify it.
 
 ⭐ If you like this project, don't forget to star the repo on GitHub!
-yaml
-Copy code
-
----
-
-Would you like me to **add emojis and better formatting for GitHub visuals** (bold icons, code badges, table of contents, etc.) to make it more professional?
