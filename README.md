@@ -100,8 +100,7 @@ Copy code
 npm start
 5️⃣ Open in browser:
 Visit 👉 http://localhost:5000
-
-📸 Screenshots
+```
 🏕 Homepage
 Displays popular destinations and search functionality.
 
@@ -126,7 +125,7 @@ Flash messages show success/error feedback for every action.
 ☁️ Deployment
 WanderLust can be deployed on:
 
-Render / Railway / Vercel (Backend + Frontend)
+Vercel (Backend + Frontend)
 
 MongoDB Atlas for the database
 
@@ -136,18 +135,10 @@ Cloudinary for media storage
 👨 Akshay Jain
 📍 MCA Student | MERN Stack Developer
 💼 Passionate about web development and building full-stack projects
-🔗 GitHub | LinkedIn
+🔗 [GitHub](https://github.com/Akshay1267) | [LinkedIn](https://www.linkedin.com/in/akshay-jain-8816252a5/)
+
 
 🌟 Acknowledgments
 Shradha Khapra (Apna College) for the Alpha Course
-
-Cloudinary
-
-Mapbox
-
-MongoDB Atlas
-
-📝 License
-This project is licensed under the MIT License – feel free to use and modify it.
 
 ⭐ If you like this project, don't forget to star the repo on GitHub!
