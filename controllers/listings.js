@@ -2,6 +2,8 @@ const Listing = require("../models/listing");
 
 module.exports.index = async (req, res) => {
   let allListings = await Listing.find({});
+  console.log("Listings found:", allListings.length);
+  console.log("Listings data:", allListings);
   res.render("./listings/index.ejs", { allListings });
 };
 
@@ -22,13 +24,16 @@ module.exports.showListing = async (req, res) => {
 };
 
 module.exports.createListing = async (req, res, next) => {
+  console.log("File from Cloudinary:", req.file);
   let url = req.file.path;
   let filename = req.file.filename;
-  // console.log(url, "..", filename);
+  console.log("Cloudinary URL:", url);
+  console.log("Cloudinary Filename:", filename);
   const newListing = new Listing(req.body.listing);
   newListing.owner = req.user._id;
   newListing.image = {url, filename};
   await newListing.save();
+  console.log("Listing saved to MongoDB:", newListing);
   req.flash("success", "Successfully made a new listing!");
   res.redirect("/listings");
 };

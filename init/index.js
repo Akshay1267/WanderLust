@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-const db = "mongodb://127.0.0.1:27017/wanderlust";
+const dotenv = require('dotenv');
+dotenv.config();
+const dbUrl = process.env.ATLASDB_URL;
 const Listing = require('../models/listing.js');
 const initData = require('./data.js');
 
@@ -10,7 +12,11 @@ main().then((res) => {
 });
 
 async function main() {
-    await mongoose.connect(db);
+    await mongoose.connect(dbUrl, {
+        ssl: true,
+        retryWrites: true,
+        w: "majority"
+    });
 }
 
 const initDB = async () => {

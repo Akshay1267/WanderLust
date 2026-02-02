@@ -1,7 +1,6 @@
 if (process.env.NODE_ENV != "production") {
   require("dotenv").config();
 }
-// console.log(process.env.CODE);
 const express = require("express");
 const app = express();
 const port = 5000;
@@ -52,7 +51,7 @@ const store = MongoStore.create({
   touchAfter: 24 * 60 * 60
 });
 
-store.on("error", () => {
+store.on("error", (err) => {
   console.log("Session Store Error", err);
 });
 
@@ -99,18 +98,6 @@ const validateListing = (req, res, next) => {
 
 app.use("/", userRouter);
 
-main()
-  .then(() => {
-    console.log("Connected to MongoDb");
-  })
-  .catch((err) => {
-    console.log("Error: ", err);
-  });
-
-async function main() {
-  await mongoose.connect(dbUrl);
-}
-
 let validateReview = (req, res, next) => {
   let { error } = reviewSchema.validate(req.body);
   if (error) {
@@ -119,6 +106,11 @@ let validateReview = (req, res, next) => {
     next();
   }
 };
+
+// Root route
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
 
 app
   .route("/listings")
@@ -147,15 +139,6 @@ app
 //   res.send(registeredUser);
 // });
 
-app.listen(port, () => {
-  console.log(`App listening at Port:${port}`);
-});
-
-app.get("/listings", async (req, res) => {
-  let allListings = await Listing.find({});
-  res.render("listings/index.ejs", { allListings });
-});
-
 // new listing route
 app.get("/listings/new", isLoggedIn, listingsController.renderNewForm);
 
@@ -166,7 +149,6 @@ app.post(
   "/listings/:id/reviews",
   isLoggedIn,
   validateReview,
-  isReviewAuthor,
   wrapAsync(async (req, res) => {
     let listing = await Listing.findById(req.params.id).populate("reviews");
     // .populate("owner");
@@ -209,7 +191,7 @@ app.put(
   wrapAsync(listingsController.updateListing)
 );
 
-app.delete("/listings/:id", listingsController.deleteListing);
+app.delete("/listings/:id", isLoggedIn, isOwner, wrapAsync(listingsController.deleteListing));
 
 app.use((req, res, next) => {
   next(new ExpressError(404, "Page not found"));
@@ -220,3 +202,23 @@ app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something went wrong!" } = err;
   res.status(statusCode).render("error.ejs", { err });
 });
+
+// Database connection and server startup
+main()
+  .then(() => {
+    console.log("Connected to MongoDb");
+    app.listen(port, () => {
+      console.log(`App listening at Port:${port}`);
+    });
+  })
+  .catch((err) => {
+    console.log("Error: ", err);
+  });
+
+async function main() {
+  await mongoose.connect(dbUrl, {
+    ssl: true,
+    retryWrites: true,
+    w: "majority"
+  });
+}
