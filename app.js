@@ -122,22 +122,7 @@ app
     wrapAsync(listingsController.createListing)
   );
   
-// .post(upload.single('listing[image]'), (req, res) => {
-//   res.send(req.file);
-// }
-// );
-// app.post("/" ,(req,res) => {
-// })
 
-// app.get("/demoUser", async (req, res) => {
-//   let user = new User({
-//     username: "Akshay Jain",
-//     email: "akshay@gmail.com",
-//   });
-//   let registeredUser = await User.register(user, "helloworld");
-//   console.log(registeredUser);
-//   res.send(registeredUser);
-// });
 
 // new listing route
 app.get("/listings/new", isLoggedIn, listingsController.renderNewForm);
