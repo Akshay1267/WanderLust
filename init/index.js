@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const dbUrl = process.env.ATLASDB_URL;
 const Listing = require('../models/listing.js');
+const User = require('../models/user.js');
 const initData = require('./data.js');
 
 main().then((res) => {
@@ -20,13 +21,32 @@ async function main() {
 }
 
 const initDB = async () => {
+    // Delete existing listings and users
     await Listing.deleteMany({});
+    await User.deleteMany({});
+    
+    // Create a default user
+    const defaultUser = new User({
+        username: "wanderlust_admin",
+        email: "admin@wanderlust.com"
+    });
+    
+    const registeredUser = await User.register(defaultUser, "password123");
+    console.log("Default user created:", registeredUser.username);
+    
+    // Add listings with the created user as owner
     initData.data = initData.data.map((obj) => ({
         ...obj, 
-        owner: "690ee6ded6db7a9049954bf2"  
+        owner: registeredUser._id  
     }));
     await Listing.insertMany(initData.data);
-    console.log("Database Initialized");
+    console.log("Database Initialized with", initData.data.length, "listings");
 };
 
-initDB();
+initDB().then(() => {
+    mongoose.connection.close();
+    console.log("Database initialization complete");
+}).catch((err) => {
+    console.log("Init error:", err);
+    mongoose.connection.close();
+});
